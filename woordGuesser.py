@@ -10,7 +10,6 @@ mainWindow.geometry("600x300")
 
 topText = StringVar(mainWindow, "")
 btnText = StringVar(mainWindow, "")
-score = 0
 
 topTextLabel = tkinter.Label(
     fg="black",
@@ -78,6 +77,11 @@ def checkWordLength():
         generateGuessScreen()
 
 def generateGuessScreen():
+    global spinboxArray
+    global spinboxContentArray
+    global wordLength
+    global score
+
     vulInHier.destroy()
     entryLabel.destroy()
     topText.set("Raad het woord")
@@ -85,6 +89,7 @@ def generateGuessScreen():
     btn.configure(command=raadWoord)
 
     wordLength = len(wordToGuess.get())
+    score = wordLength * wordLength
     spinboxArray = []
     alphabet = list(string.ascii_lowercase)
     spinboxContentArray = []
@@ -109,7 +114,27 @@ def generateGuessScreen():
         )
 
 def raadWoord():
-    pass
+    global score
+
+    goodAndWrong = [0, 0]
+
+    for x in range(0, wordLength):
+        if spinboxContentArray[x].get() == wordToGuess.get()[x]:
+            goodAndWrong[0] += 1
+        else:
+            goodAndWrong[1] += 1
+    
+    if goodAndWrong[0] == wordLength:
+        messagebox.showinfo(message="U heeft het woord goed geraden!")
+        for box in spinboxArray:
+            box.destroy()
+        vulWoordInScreen()
+    else:
+        messagebox.showerror(message="Helaas! U heeft er {} fout! Probeer het nog eens".format(goodAndWrong[1]))
+        score -= goodAndWrong[1] * 2
+        if score <= 0:
+            messagebox.showerror(message="U heeft verloren!")
+            mainWindow.destroy()
 
 vulWoordInScreen()
 
