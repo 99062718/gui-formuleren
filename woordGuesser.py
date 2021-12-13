@@ -104,7 +104,8 @@ def generateGuessScreen():
                 mainWindow,
                 width=5,
                 values=randomValues,
-                textvariable=spinboxContentArray[x]
+                textvariable=spinboxContentArray[x],
+                wrap=True
             )
         )
         spinboxArray[x].grid(
